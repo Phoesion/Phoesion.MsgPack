@@ -7,11 +7,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Internal;
 
 #pragma warning disable SA1649 // File name should match first type name
 
-namespace MessagePack.Formatters
+namespace Phoesion.MsgPack.Formatters
 {
     // NET40 -> BigInteger, Complex, Tuple
 

@@ -15,7 +15,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.Extensions.Hosting;
 
-namespace MessagePack.Generator
+namespace Phoesion.MsgPack.Generator
 {
     public class MessagepackCompiler : ConsoleAppBase
     {

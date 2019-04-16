@@ -3,9 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using MessagePack.Formatters;
+using Phoesion.MsgPack.Formatters;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// Singleton version of CompositeResolver, which be able to register a collection of formatters and resolvers to a single instance.

@@ -13,7 +13,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace MessagePack.Generator
+namespace Phoesion.MsgPack.Generator
 {
     internal static class PseudoCompilation
     {
@@ -146,7 +146,7 @@ namespace MessagePack.Generator
         private const string DummyAnnotation = @"
 using System;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
     public class MessagePackObjectAttribute : Attribute

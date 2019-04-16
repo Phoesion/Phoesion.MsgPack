@@ -21,13 +21,13 @@
 
 namespace <#= Namespace #>
 {
-    using System;
-    using System.Buffers;
-    using MessagePack;
+    using global::System;
+    using global::System.Buffers;
+    using global::Phoesion.MsgPack;
 <# foreach(var objInfo in ObjectSerializationInfos) {
     bool isFormatterResolverNecessary = ShouldUseFormatterResolverHelper.ShouldUseFormatterResolver(objInfo.Members);#>
 
-    public sealed class <#= objInfo.Name #>Formatter<#= (objInfo.IsOpenGenericType ? $"<{string.Join(",", objInfo.GenericTypeParameters.Select(x => x.Name))}>" : "") #> : global::MessagePack.Formatters.IMessagePackFormatter<<#= objInfo.FullName #>>
+    public sealed class <#= objInfo.Name #>Formatter<#= (objInfo.IsOpenGenericType ? $"<{string.Join(",", objInfo.GenericTypeParameters.Select(x => x.Name))}>" : "") #> : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<<#= objInfo.FullName #>>
 <# foreach(var typeArg in objInfo.GenericTypeParameters.Where(x => x.HasConstraints)) { #>
         where <#= typeArg.Name #> : <#= typeArg.Constraints #>
 <# } #>
@@ -38,7 +38,7 @@ namespace <#= Namespace #>
 <# } #>
 <# } #>
 
-        public void Serialize(ref MessagePackWriter writer, <#= objInfo.FullName #> value, global::MessagePack.MessagePackSerializerOptions options)
+        public void Serialize(ref MessagePackWriter writer, <#= objInfo.FullName #> value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
 <# if( objInfo.IsClass) { #>
             if (value == null)
@@ -67,7 +67,7 @@ namespace <#= Namespace #>
 <# } } #>
         }
 
-        public <#= objInfo.FullName #> Deserialize(ref MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        public <#= objInfo.FullName #> Deserialize(ref MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {

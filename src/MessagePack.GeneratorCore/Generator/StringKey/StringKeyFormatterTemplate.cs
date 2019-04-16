@@ -43,8 +43,8 @@ namespace MessagePackCompiler.Generator
 
 namespace ");
             this.Write(this.ToStringHelper.ToStringWithCulture(Namespace));
-            this.Write("\r\n{\r\n    using System;\r\n    using System.Buffers;\r\n    using System.Runtime.Inter" +
-                    "opServices;\r\n    using MessagePack;\r\n");
+            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using glob" +
+                    "al::System.Runtime.InteropServices;\r\n    using global::Phoesion.MsgPack;\r\n");
 
 var list = new List<ValueTuple<MemberSerializationInfo, byte[]>>();
 foreach (var objInfo in ObjectSerializationInfos)
@@ -61,7 +61,7 @@ foreach (var objInfo in ObjectSerializationInfos)
 
             this.Write("\r\n    public sealed class ");
             this.Write(this.ToStringHelper.ToStringWithCulture(formatterName));
-            this.Write(" : global::MessagePack.Formatters.IMessagePackFormatter<");
+            this.Write(" : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
             this.Write(">\r\n");
  foreach (var typeArg in objInfo.GenericTypeParameters.Where(x => x.HasConstraints)) {
@@ -88,10 +88,11 @@ foreach (var objInfo in ObjectSerializationInfos)
 
     }
 
-            this.Write("\r\n        public void Serialize(ref global::MessagePack.MessagePackWriter writer," +
-                    " ");
+            this.Write("\r\n        public void Serialize(ref global::Phoesion.MsgPack.MessagePackWriter wr" +
+                    "iter, ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
-            this.Write(" value, global::MessagePack.MessagePackSerializerOptions options)\r\n        {\r\n");
+            this.Write(" value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)\r\n        {" +
+                    "\r\n");
 
     if (objInfo.IsClass)
     {
@@ -113,8 +114,8 @@ foreach (var objInfo in ObjectSerializationInfos)
         if (objInfo.NeedsCastOnBefore)
         {
 
-            this.Write("            ((global::MessagePack.IMessagePackSerializationCallbackReceiver)value" +
-                    ").OnBeforeSerialize();\r\n");
+            this.Write("            ((global::Phoesion.MsgPack.IMessagePackSerializationCallbackReceiver)" +
+                    "value).OnBeforeSerialize();\r\n");
 
         }
         else
@@ -143,9 +144,9 @@ foreach (var objInfo in ObjectSerializationInfos)
 
             this.Write("        }\r\n\r\n        public ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
-            this.Write(" Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePac" +
-                    "k.MessagePackSerializerOptions options)\r\n        {\r\n            if (reader.TryRe" +
-                    "adNil())\r\n            {\r\n");
+            this.Write(" Deserialize(ref global::Phoesion.MsgPack.MessagePackReader reader, global::Phoes" +
+                    "ion.MsgPack.MessagePackSerializerOptions options)\r\n        {\r\n            if (re" +
+                    "ader.TryReadNil())\r\n            {\r\n");
 
     if (objInfo.IsClass)
     {
@@ -199,7 +200,7 @@ foreach (var objInfo in ObjectSerializationInfos)
             this.Write(@"
             for (int i = 0; i < length; i++)
             {
-                ReadOnlySpan<byte> stringKey = global::MessagePack.Internal.CodeGenHelpers.ReadStringSpan(ref reader);
+                ReadOnlySpan<byte> stringKey = global::Phoesion.MsgPack.Internal.CodeGenHelpers.ReadStringSpan(ref reader);
                 switch (stringKey.Length)
                 {
                     default:
@@ -233,8 +234,8 @@ foreach (var objInfo in ObjectSerializationInfos)
         if (objInfo.NeedsCastOnAfter)
         {
 
-            this.Write("            ((global::MessagePack.IMessagePackSerializationCallbackReceiver)____r" +
-                    "esult).OnAfterDeserialize();\r\n");
+            this.Write("            ((global::Phoesion.MsgPack.IMessagePackSerializationCallbackReceiver)" +
+                    "____result).OnAfterDeserialize();\r\n");
 
         }
         else

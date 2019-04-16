@@ -18,33 +18,33 @@
 
 namespace <#= Namespace #>
 {
-    using System;
-    using System.Buffers;
-    using MessagePack;
+    using global::System;
+    using global::System.Buffers;
+    using global::Phoesion.MsgPack;
 
-    public class <#= ResolverName #> : global::MessagePack.IFormatterResolver
+    public class <#= ResolverName #> : global::Phoesion.MsgPack.IFormatterResolver
     {
-        public static readonly global::MessagePack.IFormatterResolver Instance = new <#= ResolverName #>();
+        public static readonly global::Phoesion.MsgPack.IFormatterResolver Instance = new <#= ResolverName #>();
 
         private <#= ResolverName #>()
         {
         }
 
-        public global::MessagePack.Formatters.IMessagePackFormatter<T> GetFormatter<T>()
+        public global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<T> GetFormatter<T>()
         {
             return FormatterCache<T>.Formatter;
         }
 
         private static class FormatterCache<T>
         {
-            internal static readonly global::MessagePack.Formatters.IMessagePackFormatter<T> Formatter;
+            internal static readonly global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<T> Formatter;
 
             static FormatterCache()
             {
                 var f = <#= ResolverName #>GetFormatterHelper.GetFormatter(typeof(T));
                 if (f != null)
                 {
-                    Formatter = (global::MessagePack.Formatters.IMessagePackFormatter<T>)f;
+                    Formatter = (global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<T>)f;
                 }
             }
         }

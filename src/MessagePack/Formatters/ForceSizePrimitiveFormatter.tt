@@ -28,7 +28,7 @@ using System.Buffers;
 
 #pragma warning disable SA1649 // File name should match first type name
 
-namespace MessagePack.Formatters
+namespace Phoesion.MsgPack.Formatters
 {<# foreach(var t in types) {
     string writeSuffix = 
         t.Name == nameof(Byte) ? "UInt8" :

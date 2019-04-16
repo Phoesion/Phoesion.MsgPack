@@ -11,8 +11,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
 using System.Threading;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
 #pragma warning disable SA1403 // File may only contain a single namespace
 #pragma warning disable SA1509 // Opening braces should not be preceded by blank line
@@ -25,14 +26,14 @@ using MessagePackObjectAttribute = MessagePack.MessagePackObjectAttribute;
 using SerializationConstructorAttribute = MessagePack.SerializationConstructorAttribute;
 using UnionAttribute = MessagePack.UnionAttribute;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// UnionResolver by dynamic code generation.
     /// </summary>
     public sealed class DynamicUnionResolver : IFormatterResolver
     {
-        private const string ModuleName = "MessagePack.Resolvers.DynamicUnionResolver";
+        private const string ModuleName = "Phoesion.MsgPack.Resolvers.DynamicUnionResolver";
 
         /// <summary>
         /// The singleton instance that can be used.
@@ -142,7 +143,7 @@ namespace MessagePack.Resolvers
             Type formatterType = typeof(IMessagePackFormatter<>).MakeGenericType(type);
             using (MonoProtection.EnterRefEmitLock())
             {
-                TypeBuilder typeBuilder = DynamicAssembly.Value.DefineType("MessagePack.Formatters." + SubtractFullNameRegex.Replace(type.FullName, string.Empty).Replace(".", "_") + "Formatter" + +Interlocked.Increment(ref nameSequence), TypeAttributes.Public | TypeAttributes.Sealed, null, new[] { formatterType });
+                TypeBuilder typeBuilder = DynamicAssembly.Value.DefineType("Phoesion.MsgPack.Formatters." + SubtractFullNameRegex.Replace(type.FullName, string.Empty).Replace(".", "_") + "Formatter" + +Interlocked.Increment(ref nameSequence), TypeAttributes.Public | TypeAttributes.Sealed, null, new[] { formatterType });
 
                 FieldBuilder typeToKeyAndJumpMap = null; // Dictionary<RuntimeTypeHandle, KeyValuePair<int, int>>
                 FieldBuilder keyToJumpMap = null; // Dictionary<int, int>

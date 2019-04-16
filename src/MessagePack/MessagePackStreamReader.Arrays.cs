@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Nerdbank.Streams;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     public partial class MessagePackStreamReader : IDisposable
     {

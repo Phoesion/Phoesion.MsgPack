@@ -18,20 +18,20 @@
 
 namespace <#= Namespace #>
 {
-    using System;
-    using System.Buffers;
-    using System.Collections.Generic;
-    using MessagePack;
+    using global::System;
+    using global::System.Buffers;
+    using global::System.Collections.Generic;
+    using global::Phoesion.MsgPack;
 
 <# foreach(var info in UnionSerializationInfos) { #>
-    public sealed class <#= info.Name #>Formatter : global::MessagePack.Formatters.IMessagePackFormatter<<#= info.FullName #>>
+    public sealed class <#= info.Name #>Formatter : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<<#= info.FullName #>>
     {
         private readonly Dictionary<RuntimeTypeHandle, KeyValuePair<int, int>> typeToKeyAndJumpMap;
         private readonly Dictionary<int, int> keyToJumpMap;
 
         public <#= info.Name #>Formatter()
         {
-            this.typeToKeyAndJumpMap = new Dictionary<RuntimeTypeHandle, KeyValuePair<int, int>>(<#= info.SubTypes.Length #>, global::MessagePack.Internal.RuntimeTypeHandleEqualityComparer.Default)
+            this.typeToKeyAndJumpMap = new Dictionary<RuntimeTypeHandle, KeyValuePair<int, int>>(<#= info.SubTypes.Length #>, global::Phoesion.MsgPack.Internal.RuntimeTypeHandleEqualityComparer.Default)
             {
 <# for(var i = 0; i < info.SubTypes.Length; i++) { var item = info.SubTypes[i]; #>
                 { typeof(<#= item.Type #>).TypeHandle, new KeyValuePair<int, int>(<#= item.Key #>, <#= i #>) },
@@ -45,7 +45,7 @@ namespace <#= Namespace #>
             };
         }
 
-        public void Serialize(ref MessagePackWriter writer, <#= info.FullName #> value, global::MessagePack.MessagePackSerializerOptions options)
+        public void Serialize(ref MessagePackWriter writer, <#= info.FullName #> value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
             KeyValuePair<int, int> keyValuePair;
             if (value != null && this.typeToKeyAndJumpMap.TryGetValue(value.GetType().TypeHandle, out keyValuePair))
@@ -69,7 +69,7 @@ namespace <#= Namespace #>
             writer.WriteNil();
         }
 
-        public <#= info.FullName #> Deserialize(ref MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        public <#= info.FullName #> Deserialize(ref MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {

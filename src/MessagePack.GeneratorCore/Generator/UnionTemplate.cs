@@ -40,12 +40,12 @@ namespace MessagePackCompiler.Generator
 
 namespace ");
             this.Write(this.ToStringHelper.ToStringWithCulture(Namespace));
-            this.Write("\r\n{\r\n    using System;\r\n    using System.Buffers;\r\n    using System.Collections.G" +
-                    "eneric;\r\n    using MessagePack;\r\n\r\n");
+            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using glob" +
+                    "al::System.Collections.Generic;\r\n    using global::Phoesion.MsgPack;\r\n\r\n");
  foreach(var info in UnionSerializationInfos) { 
             this.Write("    public sealed class ");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.Name));
-            this.Write("Formatter : global::MessagePack.Formatters.IMessagePackFormatter<");
+            this.Write("Formatter : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.FullName));
             this.Write(">\r\n    {\r\n        private readonly Dictionary<RuntimeTypeHandle, KeyValuePair<int" +
                     ", int>> typeToKeyAndJumpMap;\r\n        private readonly Dictionary<int, int> keyT" +
@@ -54,8 +54,8 @@ namespace ");
             this.Write("Formatter()\r\n        {\r\n            this.typeToKeyAndJumpMap = new Dictionary<Run" +
                     "timeTypeHandle, KeyValuePair<int, int>>(");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.SubTypes.Length));
-            this.Write(", global::MessagePack.Internal.RuntimeTypeHandleEqualityComparer.Default)\r\n      " +
-                    "      {\r\n");
+            this.Write(", global::Phoesion.MsgPack.Internal.RuntimeTypeHandleEqualityComparer.Default)\r\n " +
+                    "           {\r\n");
  for(var i = 0; i < info.SubTypes.Length; i++) { var item = info.SubTypes[i]; 
             this.Write("                { typeof(");
             this.Write(this.ToStringHelper.ToStringWithCulture(item.Type));
@@ -78,7 +78,7 @@ namespace ");
             this.Write("            };\r\n        }\r\n\r\n        public void Serialize(ref MessagePackWriter " +
                     "writer, ");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.FullName));
-            this.Write(@" value, global::MessagePack.MessagePackSerializerOptions options)
+            this.Write(@" value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
             KeyValuePair<int, int> keyValuePair;
             if (value != null && this.typeToKeyAndJumpMap.TryGetValue(value.GetType().TypeHandle, out keyValuePair))
@@ -101,7 +101,7 @@ namespace ");
                     "\r\n                return;\r\n            }\r\n\r\n            writer.WriteNil();\r\n    " +
                     "    }\r\n\r\n        public ");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.FullName));
-            this.Write(@" Deserialize(ref MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+            this.Write(@" Deserialize(ref MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {

@@ -43,14 +43,15 @@ namespace MessagePackCompiler.Generator
 
 namespace ");
             this.Write(this.ToStringHelper.ToStringWithCulture(Namespace));
-            this.Write("\r\n{\r\n    using System;\r\n    using System.Buffers;\r\n    using MessagePack;\r\n");
+            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using glob" +
+                    "al::Phoesion.MsgPack;\r\n");
  foreach(var objInfo in ObjectSerializationInfos) {
     bool isFormatterResolverNecessary = ShouldUseFormatterResolverHelper.ShouldUseFormatterResolver(objInfo.Members);
             this.Write("\r\n    public sealed class ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.Name));
             this.Write("Formatter");
             this.Write(this.ToStringHelper.ToStringWithCulture((objInfo.IsOpenGenericType ? $"<{string.Join(",", objInfo.GenericTypeParameters.Select(x => x.Name))}>" : "")));
-            this.Write(" : global::MessagePack.Formatters.IMessagePackFormatter<");
+            this.Write(" : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
             this.Write(">\r\n");
  foreach(var typeArg in objInfo.GenericTypeParameters.Where(x => x.HasConstraints)) { 
@@ -74,7 +75,8 @@ namespace ");
  } 
             this.Write("\r\n        public void Serialize(ref MessagePackWriter writer, ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
-            this.Write(" value, global::MessagePack.MessagePackSerializerOptions options)\r\n        {\r\n");
+            this.Write(" value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)\r\n        {" +
+                    "\r\n");
  if( objInfo.IsClass) { 
             this.Write("            if (value == null)\r\n            {\r\n                writer.WriteNil();" +
                     "\r\n                return;\r\n            }\r\n\r\n");
@@ -103,9 +105,9 @@ namespace ");
  } } 
             this.Write("        }\r\n\r\n        public ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
-            this.Write(" Deserialize(ref MessagePackReader reader, global::MessagePack.MessagePackSeriali" +
-                    "zerOptions options)\r\n        {\r\n            if (reader.TryReadNil())\r\n          " +
-                    "  {\r\n");
+            this.Write(" Deserialize(ref MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSe" +
+                    "rializerOptions options)\r\n        {\r\n            if (reader.TryReadNil())\r\n     " +
+                    "       {\r\n");
  if( objInfo.IsClass) { 
             this.Write("                return null;\r\n");
  } else { 

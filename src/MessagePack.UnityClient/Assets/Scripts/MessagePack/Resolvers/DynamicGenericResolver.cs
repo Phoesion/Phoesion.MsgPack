@@ -9,12 +9,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
 #pragma warning disable SA1403 // File may only contain a single namespace
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     public sealed class DynamicGenericResolver : IFormatterResolver
     {
@@ -44,7 +44,7 @@ namespace MessagePack.Resolvers
     }
 }
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     internal static class DynamicGenericResolverGetFormatterHelper
     {

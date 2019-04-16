@@ -10,12 +10,12 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     public partial class MessagePackSerializer
     {
         private static readonly Func<Type, CompiledMethods> CreateCompiledMethods;
-        private static readonly MessagePack.Internal.ThreadsafeTypeKeyHashTable<CompiledMethods> Serializes = new MessagePack.Internal.ThreadsafeTypeKeyHashTable<CompiledMethods>(capacity: 64);
+        private static readonly Phoesion.MsgPack.Internal.ThreadsafeTypeKeyHashTable<CompiledMethods> Serializes = new Phoesion.MsgPack.Internal.ThreadsafeTypeKeyHashTable<CompiledMethods>(capacity: 64);
 
         static MessagePackSerializer()
         {

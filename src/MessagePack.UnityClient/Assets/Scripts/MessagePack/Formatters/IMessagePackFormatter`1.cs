@@ -4,7 +4,7 @@
 using System.Buffers;
 using System.ComponentModel;
 
-namespace MessagePack.Formatters
+namespace Phoesion.MsgPack.Formatters
 {
 #pragma warning disable SA1649 // File name should match first type name
     /// <summary>

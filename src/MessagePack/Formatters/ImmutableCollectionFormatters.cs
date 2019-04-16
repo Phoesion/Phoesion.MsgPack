@@ -4,11 +4,11 @@
 using System;
 using System.Buffers;
 using System.Collections.Immutable;
-using MessagePack.Formatters;
+using Phoesion.MsgPack.Formatters;
 
 #pragma warning disable SA1649 // File name should match first type name
 
-namespace MessagePack.ImmutableCollection
+namespace Phoesion.MsgPack.ImmutableCollection
 {
     // Immutablearray<T>.Enumerator is 'not' IEnumerator<T>, can't use abstraction layer.
     public class ImmutableArrayFormatter<T> : IMessagePackFormatter<ImmutableArray<T>>

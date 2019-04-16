@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     /* for string key property name write optimization. */
 

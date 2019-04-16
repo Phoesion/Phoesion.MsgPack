@@ -7,7 +7,7 @@ using System;
 
 #pragma warning disable SA1649 // File name should match first type name
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     /* Safe for multiple-read, single-write.
      * Add and Get Key is asymmetric. */

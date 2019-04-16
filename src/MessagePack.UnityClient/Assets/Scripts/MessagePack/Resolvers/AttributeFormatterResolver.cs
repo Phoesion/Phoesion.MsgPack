@@ -4,7 +4,7 @@
 using System;
 using System.Linq; // require UNITY_2018_3_OR_NEWER
 using System.Reflection;
-using MessagePack.Formatters;
+using Phoesion.MsgPack.Formatters;
 
 using IgnoreMemberAttribute = MessagePack.IgnoreMemberAttribute;
 using IMessagePackSerializationCallbackReceiver = MessagePack.IMessagePackSerializationCallbackReceiver;
@@ -14,7 +14,7 @@ using MessagePackObjectAttribute = MessagePack.MessagePackObjectAttribute;
 using SerializationConstructorAttribute = MessagePack.SerializationConstructorAttribute;
 using UnionAttribute = MessagePack.UnionAttribute;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// Get formatter from <see cref="MessagePackFormatterAttribute"/>.

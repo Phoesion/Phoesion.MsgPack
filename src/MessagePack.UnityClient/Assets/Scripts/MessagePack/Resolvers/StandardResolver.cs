@@ -2,13 +2,13 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Linq;
-using MessagePack.Formatters;
-using MessagePack.Internal;
-using MessagePack.Resolvers;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
+using Phoesion.MsgPack.Resolvers;
 
 #pragma warning disable SA1403 // File may only contain a single namespace
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// Default composited resolver, builtin -> attribute -> dynamic enum -> dynamic generic -> dynamic union -> dynamic object -> primitive.
@@ -276,7 +276,7 @@ namespace MessagePack.Resolvers
     }
 }
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     internal static class StandardResolverHelper
     {

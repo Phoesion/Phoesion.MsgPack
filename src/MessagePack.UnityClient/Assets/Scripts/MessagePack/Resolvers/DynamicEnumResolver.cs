@@ -8,10 +8,10 @@ using System.Buffers;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// EnumResolver by dynamic code generation, serialized underlying type.
@@ -23,7 +23,7 @@ namespace MessagePack.Resolvers
         /// </summary>
         public static readonly DynamicEnumResolver Instance = new DynamicEnumResolver();
 
-        private const string ModuleName = "MessagePack.Resolvers.DynamicEnumResolver";
+        private const string ModuleName = "Phoesion.MsgPack.Resolvers.DynamicEnumResolver";
 
         private static readonly Lazy<DynamicAssembly> DynamicAssembly;
 
@@ -92,7 +92,7 @@ namespace MessagePack.Resolvers
 
             using (MonoProtection.EnterRefEmitLock())
             {
-                TypeBuilder typeBuilder = DynamicAssembly.Value.DefineType("MessagePack.Formatters." + enumType.FullName.Replace(".", "_") + "Formatter" + Interlocked.Increment(ref nameSequence), TypeAttributes.Public | TypeAttributes.Sealed, null, new[] { formatterType });
+                TypeBuilder typeBuilder = DynamicAssembly.Value.DefineType("Phoesion.MsgPack.Formatters." + enumType.FullName.Replace(".", "_") + "Formatter" + Interlocked.Increment(ref nameSequence), TypeAttributes.Public | TypeAttributes.Sealed, null, new[] { formatterType });
 
                 // void Serialize(ref MessagePackWriter writer, T value, MessagePackSerializerOptions options);
                 {

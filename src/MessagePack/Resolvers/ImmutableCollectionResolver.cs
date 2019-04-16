@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
-using MessagePack.Formatters;
+using Phoesion.MsgPack.Formatters;
 
-namespace MessagePack.ImmutableCollection
+namespace Phoesion.MsgPack.ImmutableCollection
 {
     public class ImmutableCollectionResolver : IFormatterResolver
     {

@@ -12,9 +12,9 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Internal;
 
-namespace MessagePack.Formatters
+namespace Phoesion.MsgPack.Formatters
 {
 #pragma warning disable SA1649 // File name should match first type name
 

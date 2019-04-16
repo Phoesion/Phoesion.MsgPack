@@ -8,7 +8,7 @@ using System.Text;
 
 #pragma warning disable SA1649 // File name should match first type name
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     /* simple, tiny JSON reader for MessagePackSerializer.FromJson.
      * this is simple, compact and enough fast but not optimized extremely. */

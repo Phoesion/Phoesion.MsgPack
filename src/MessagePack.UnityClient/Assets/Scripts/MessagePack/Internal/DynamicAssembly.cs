@@ -7,7 +7,7 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     internal class DynamicAssembly
     {

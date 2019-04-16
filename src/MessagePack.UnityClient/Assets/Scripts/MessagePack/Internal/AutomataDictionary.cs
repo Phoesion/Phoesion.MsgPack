@@ -13,7 +13,7 @@ using System.Text;
 
 #pragma warning disable SA1509 // Opening braces should not be preceded by blank line
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     // Key = long, Value = int for UTF8String Dictionary
 

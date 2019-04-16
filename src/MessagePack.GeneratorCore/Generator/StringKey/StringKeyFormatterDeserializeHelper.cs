@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Internal;
 using MessagePackCompiler.CodeAnalysis;
 
 namespace MessagePackCompiler.Generator
@@ -50,7 +50,7 @@ namespace MessagePackCompiler.Generator
                 return;
             }
 
-            buffer.Append("switch (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey))\r\n").Append(indent);
+            buffer.Append("switch (global::Phoesion.MsgPack.Internal.AutomataKeyGen.GetKey(ref stringKey))\r\n").Append(indent);
             for (var i = 0; i < tabCount; i++)
             {
                 buffer.Append(Tab);
@@ -123,7 +123,7 @@ namespace MessagePackCompiler.Generator
                 case 6:
                 case 7:
                 case 8:
-                    buffer.Append("if (global::MessagePack.Internal.AutomataKeyGen.GetKey(ref stringKey) != ").Append(member.Key[tabCount - 1]).Append("UL");
+                    buffer.Append("if (global::Phoesion.MsgPack.Internal.AutomataKeyGen.GetKey(ref stringKey) != ").Append(member.Key[tabCount - 1]).Append("UL");
                     break;
                 default:
                     EmbedSequenceEqual(buffer, member, (tabCount << 3) - 8);

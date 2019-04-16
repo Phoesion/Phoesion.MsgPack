@@ -22,10 +22,10 @@
 
 namespace <#= Namespace #>
 {
-    using System;
-    using System.Buffers;
-    using System.Runtime.InteropServices;
-    using MessagePack;
+    using global::System;
+    using global::System.Buffers;
+    using global::System.Runtime.InteropServices;
+    using global::Phoesion.MsgPack;
 <#
 var list = new List<ValueTuple<MemberSerializationInfo, byte[]>>();
 foreach (var objInfo in ObjectSerializationInfos)
@@ -41,7 +41,7 @@ foreach (var objInfo in ObjectSerializationInfos)
     bool isFormatterResolverNecessary = ShouldUseFormatterResolverHelper.ShouldUseFormatterResolver(objInfo.Members);
 #>
 
-    public sealed class <#= formatterName #> : global::MessagePack.Formatters.IMessagePackFormatter<<#= objInfo.FullName #>>
+    public sealed class <#= formatterName #> : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<<#= objInfo.FullName #>>
 <# foreach (var typeArg in objInfo.GenericTypeParameters.Where(x => x.HasConstraints)) {#>
         where <#= typeArg.Name #> : <#= typeArg.Constraints #>
 <# }#>
@@ -58,7 +58,7 @@ foreach (var objInfo in ObjectSerializationInfos)
     }
 #>
 
-        public void Serialize(ref global::MessagePack.MessagePackWriter writer, <#= objInfo.FullName #> value, global::MessagePack.MessagePackSerializerOptions options)
+        public void Serialize(ref global::Phoesion.MsgPack.MessagePackWriter writer, <#= objInfo.FullName #> value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
 <#
     if (objInfo.IsClass)
@@ -85,7 +85,7 @@ foreach (var objInfo in ObjectSerializationInfos)
         if (objInfo.NeedsCastOnBefore)
         {
 #>
-            ((global::MessagePack.IMessagePackSerializationCallbackReceiver)value).OnBeforeSerialize();
+            ((global::Phoesion.MsgPack.IMessagePackSerializationCallbackReceiver)value).OnBeforeSerialize();
 <#
         }
         else
@@ -109,7 +109,7 @@ foreach (var objInfo in ObjectSerializationInfos)
 #>
         }
 
-        public <#= objInfo.FullName #> Deserialize(ref global::MessagePack.MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        public <#= objInfo.FullName #> Deserialize(ref global::Phoesion.MsgPack.MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {
@@ -161,7 +161,7 @@ foreach (var objInfo in ObjectSerializationInfos)
 
             for (int i = 0; i < length; i++)
             {
-                ReadOnlySpan<byte> stringKey = global::MessagePack.Internal.CodeGenHelpers.ReadStringSpan(ref reader);
+                ReadOnlySpan<byte> stringKey = global::Phoesion.MsgPack.Internal.CodeGenHelpers.ReadStringSpan(ref reader);
                 switch (stringKey.Length)
                 {
                     default:
@@ -193,7 +193,7 @@ foreach (var objInfo in ObjectSerializationInfos)
         if (objInfo.NeedsCastOnAfter)
         {
 #>
-            ((global::MessagePack.IMessagePackSerializationCallbackReceiver)____result).OnAfterDeserialize();
+            ((global::Phoesion.MsgPack.IMessagePackSerializationCallbackReceiver)____result).OnAfterDeserialize();
 <#
         }
         else
