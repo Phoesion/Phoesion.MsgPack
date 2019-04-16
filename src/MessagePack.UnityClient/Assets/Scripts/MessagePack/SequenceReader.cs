@@ -10,7 +10,7 @@ using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     internal ref partial struct SequenceReader<T>
         where T : unmanaged, IEquatable<T>

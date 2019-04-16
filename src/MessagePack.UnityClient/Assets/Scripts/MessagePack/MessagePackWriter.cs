@@ -8,10 +8,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Internal;
 using Microsoft;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     /// <summary>
     /// A primitive types writer for the MessagePack format.

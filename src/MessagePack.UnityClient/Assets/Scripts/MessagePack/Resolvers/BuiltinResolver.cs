@@ -6,14 +6,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using MessagePack.Formatters;
-using MessagePack.Internal;
-using MessagePack.Resolvers;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
+using Phoesion.MsgPack.Resolvers;
 
 #pragma warning disable SA1403 // File may only contain a single namespace
 #pragma warning disable SA1509 // Opening braces should not be preceded by blank line
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     public sealed class BuiltinResolver : IFormatterResolver
     {
@@ -44,7 +44,7 @@ namespace MessagePack.Resolvers
     }
 }
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     internal static class BuiltinResolverGetFormatterHelper
     {

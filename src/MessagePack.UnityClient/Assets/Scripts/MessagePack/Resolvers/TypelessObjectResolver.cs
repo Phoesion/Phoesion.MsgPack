@@ -3,10 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
 #if !UNITY_2018_3_OR_NEWER
 

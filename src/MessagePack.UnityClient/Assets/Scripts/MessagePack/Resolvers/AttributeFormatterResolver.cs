@@ -4,9 +4,9 @@
 using System;
 using System.Linq; // require UNITY_2018_3_OR_NEWER
 using System.Reflection;
-using MessagePack.Formatters;
+using Phoesion.MsgPack.Formatters;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// Get formatter from <see cref="MessagePackFormatterAttribute"/>.

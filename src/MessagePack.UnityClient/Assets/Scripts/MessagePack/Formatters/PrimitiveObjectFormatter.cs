@@ -6,7 +6,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace MessagePack.Formatters
+namespace Phoesion.MsgPack.Formatters
 {
     public sealed class PrimitiveObjectFormatter : IMessagePackFormatter<object>
     {

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Primitives;
 
 #pragma warning disable SA1649 // File name should match first type name
 
-namespace MessagePack.Formatters
+namespace Phoesion.MsgPack.Formatters
 {
     public sealed class StringValuesFormatter : IMessagePackFormatter<StringValues>
     {

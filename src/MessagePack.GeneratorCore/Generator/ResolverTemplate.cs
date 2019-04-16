@@ -40,11 +40,11 @@ namespace MessagePackCompiler.Generator
 
 namespace ");
             this.Write(this.ToStringHelper.ToStringWithCulture(Namespace));
-            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using Mess" +
-                    "agePack;\r\n\r\n    public class ");
+            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using glob" +
+                    "al::Phoesion.MsgPack;\r\n\r\n    public class ");
             this.Write(this.ToStringHelper.ToStringWithCulture(ResolverName));
-            this.Write(" : global::MessagePack.IFormatterResolver\r\n    {\r\n        public static readonly " +
-                    "global::MessagePack.IFormatterResolver Instance = new ");
+            this.Write(" : global::Phoesion.MsgPack.IFormatterResolver\r\n    {\r\n        public static read" +
+                    "only global::Phoesion.MsgPack.IFormatterResolver Instance = new ");
             this.Write(this.ToStringHelper.ToStringWithCulture(ResolverName));
             this.Write("();\r\n\r\n        private ");
             this.Write(this.ToStringHelper.ToStringWithCulture(ResolverName));
@@ -52,14 +52,14 @@ namespace ");
         {
         }
 
-        public global::MessagePack.Formatters.IMessagePackFormatter<T> GetFormatter<T>()
+        public global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<T> GetFormatter<T>()
         {
             return FormatterCache<T>.Formatter;
         }
 
         private static class FormatterCache<T>
         {
-            internal static readonly global::MessagePack.Formatters.IMessagePackFormatter<T> Formatter;
+            internal static readonly global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<T> Formatter;
 
             static FormatterCache()
             {
@@ -68,7 +68,7 @@ namespace ");
             this.Write(@"GetFormatterHelper.GetFormatter(typeof(T));
                 if (f != null)
                 {
-                    Formatter = (global::MessagePack.Formatters.IMessagePackFormatter<T>)f;
+                    Formatter = (global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<T>)f;
                 }
             }
         }

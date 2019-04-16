@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// Represents a collection of formatters and resolvers acting as one.

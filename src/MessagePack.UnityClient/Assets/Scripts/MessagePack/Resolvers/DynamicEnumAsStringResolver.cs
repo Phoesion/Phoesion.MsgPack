@@ -3,10 +3,10 @@
 
 using System;
 using System.Reflection;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     public sealed class DynamicEnumAsStringResolver : IFormatterResolver
     {

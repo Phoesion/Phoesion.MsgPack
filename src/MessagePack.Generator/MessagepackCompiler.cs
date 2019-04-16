@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ConsoleAppFramework;
 using Microsoft.Extensions.Hosting;
 
-namespace MessagePack.Generator
+namespace Phoesion.MsgPack.Generator
 {
     public class MessagepackCompiler : ConsoleAppBase
     {

@@ -1,9 +1,9 @@
 ﻿// Copyright (c) All contributors. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using MessagePack.Formatters;
+using Phoesion.MsgPack.Formatters;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     public sealed class PrimitiveObjectResolver : IFormatterResolver
     {

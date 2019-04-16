@@ -4,7 +4,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     internal static class SafeBitConverter
     {

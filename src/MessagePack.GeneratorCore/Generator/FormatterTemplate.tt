@@ -23,10 +23,10 @@ namespace <#= Namespace #>
 {
     using global::System;
     using global::System.Buffers;
-    using MessagePack;
+    using global::Phoesion.MsgPack;
 <# foreach(var objInfo in ObjectSerializationInfos) { #>
 
-    public sealed class <#= objInfo.Name #>Formatter<#= objInfo.TemplateParametersString != null? objInfo.TemplateParametersString : "" #> : global::MessagePack.Formatters.IMessagePackFormatter<<#= objInfo.FullName #>>
+    public sealed class <#= objInfo.Name #>Formatter<#= objInfo.TemplateParametersString != null? objInfo.TemplateParametersString : "" #> : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<<#= objInfo.FullName #>>
     {
 <# foreach(var item in objInfo.Members) { #>
 <# if(item.CustomFormatterTypeName != null) { #>
@@ -36,12 +36,12 @@ namespace <#= Namespace #>
 
 <# if( objInfo.IsStringKey) { #>
 
-        private readonly global::MessagePack.Internal.AutomataDictionary ____keyMapping;
+        private readonly global::Phoesion.MsgPack.Internal.AutomataDictionary ____keyMapping;
         private readonly byte[][] ____stringByteKeys;
 
         public <#= objInfo.Name #>Formatter()
         {
-            this.____keyMapping = new global::MessagePack.Internal.AutomataDictionary()
+            this.____keyMapping = new global::Phoesion.MsgPack.Internal.AutomataDictionary()
             {
 <# foreach(var x in objInfo.Members) { #>
                 { "<#= x.StringKey #>", <#= x.IntKey #> },
@@ -51,13 +51,13 @@ namespace <#= Namespace #>
             this.____stringByteKeys = new byte[][]
             {
 <# foreach(var x in objInfo.Members.Where(x => x.IsReadable)) { #>
-                global::MessagePack.Internal.CodeGenHelpers.GetEncodedStringBytes("<#= x.StringKey #>"),
+                global::Phoesion.MsgPack.Internal.CodeGenHelpers.GetEncodedStringBytes("<#= x.StringKey #>"),
 <# } #>
             };
         }
 <# } #>
 
-        public void Serialize(ref MessagePackWriter writer, <#= objInfo.FullName #> value, global::MessagePack.MessagePackSerializerOptions options)
+        public void Serialize(ref MessagePackWriter writer, <#= objInfo.FullName #> value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
 <# if( objInfo.IsClass) { #>
             if (value == null)
@@ -91,7 +91,7 @@ namespace <#= Namespace #>
 <# } } #>
         }
 
-        public <#= objInfo.FullName #> Deserialize(ref MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        public <#= objInfo.FullName #> Deserialize(ref MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {
@@ -116,7 +116,7 @@ namespace <#= Namespace #>
             for (int i = 0; i < length; i++)
             {
 <# if(objInfo.IsStringKey) { #>
-                ReadOnlySpan<byte> stringKey = global::MessagePack.Internal.CodeGenHelpers.ReadStringSpan(ref reader);
+                ReadOnlySpan<byte> stringKey = global::Phoesion.MsgPack.Internal.CodeGenHelpers.ReadStringSpan(ref reader);
                 int key;
                 if (!this.____keyMapping.TryGetValue(stringKey, out key))
                 {

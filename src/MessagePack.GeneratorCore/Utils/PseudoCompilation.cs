@@ -16,7 +16,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.FileSystemGlobbing;
 
-namespace MessagePack.GeneratorCore.Utils
+namespace Phoesion.MsgPack.GeneratorCore.Utils
 {
     internal static class PseudoCompilation
     {

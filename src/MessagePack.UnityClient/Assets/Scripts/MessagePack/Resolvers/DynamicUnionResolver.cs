@@ -11,13 +11,14 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
 using System.Threading;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
 #pragma warning disable SA1403 // File may only contain a single namespace
 #pragma warning disable SA1509 // Opening braces should not be preceded by blank line
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// UnionResolver by dynamic code generation.

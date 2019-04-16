@@ -6,10 +6,10 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     /// <summary>
     /// Allows querying for a formatter for serializing or deserializing a particular <see cref="Type" />.

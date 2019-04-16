@@ -7,10 +7,10 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
-using MessagePack.Formatters;
+using Phoesion.MsgPack.Formatters;
 using Nerdbank.Streams;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     // JSON API
     public partial class MessagePackSerializer

@@ -9,9 +9,9 @@
 using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
-using MessagePack.Formatters;
+using Phoesion.MsgPack.Formatters;
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     public static partial class UnsafeMemory32
     {

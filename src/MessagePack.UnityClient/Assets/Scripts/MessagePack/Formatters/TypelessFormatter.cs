@@ -13,9 +13,9 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Internal;
 
-namespace MessagePack.Formatters
+namespace Phoesion.MsgPack.Formatters
 {
     public sealed class GenericTypelessFormatter<T> : IMessagePackFormatter<T>
     {

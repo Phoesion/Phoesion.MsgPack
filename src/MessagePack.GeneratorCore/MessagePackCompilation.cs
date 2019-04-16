@@ -3,7 +3,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using MessagePack.GeneratorCore.Utils;
+using global::Phoesion.MsgPack.GeneratorCore.Utils;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace MessagePackCompiler
@@ -23,7 +23,7 @@ namespace MessagePackCompiler
         private const string DummyAnnotation = @"
 using System;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
     public class MessagePackObjectAttribute : Attribute
@@ -99,7 +99,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     public interface IMessagePackSerializationCallbackReceiver
     {

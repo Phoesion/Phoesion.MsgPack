@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     internal static class DateTimeConstants
     {

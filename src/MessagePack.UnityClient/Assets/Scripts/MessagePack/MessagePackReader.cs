@@ -7,9 +7,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Internal;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
     /// <summary>
     /// A primitive types reader for the MessagePack format.

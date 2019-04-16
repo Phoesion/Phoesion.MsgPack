@@ -12,12 +12,12 @@ using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
 #pragma warning disable SA1403 // File may only contain a single namespace
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// ObjectResolver by dynamic code generation.
@@ -379,7 +379,7 @@ namespace MessagePack.Resolvers
     }
 }
 
-namespace MessagePack.Internal
+namespace Phoesion.MsgPack.Internal
 {
     internal static class DynamicObjectTypeBuilder
     {
@@ -412,7 +412,7 @@ namespace MessagePack.Internal
             { typeof(System.TimeSpan) },
             { typeof(System.DateTime) },
             { typeof(System.DateTimeOffset) },
-            { typeof(MessagePack.Nil) },
+            { typeof(Phoesion.MsgPack.Nil) },
         };
 
         public static TypeInfo BuildType(DynamicAssembly assembly, Type type, bool forceStringKey, bool contractless)
@@ -422,7 +422,7 @@ namespace MessagePack.Internal
                 return null;
             }
 
-            var serializationInfo = MessagePack.Internal.ObjectSerializationInfo.CreateOrNull(type, forceStringKey, contractless, false);
+            var serializationInfo = Phoesion.MsgPack.Internal.ObjectSerializationInfo.CreateOrNull(type, forceStringKey, contractless, false);
             if (serializationInfo == null)
             {
                 return null;

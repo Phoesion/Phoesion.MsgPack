@@ -43,14 +43,14 @@ namespace MessagePackCompiler.Generator
 
 namespace ");
             this.Write(this.ToStringHelper.ToStringWithCulture(Namespace));
-            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using Mess" +
-                    "agePack;\r\n");
+            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using glob" +
+                    "al::Phoesion.MsgPack;\r\n");
  foreach(var objInfo in ObjectSerializationInfos) { 
             this.Write("\r\n    public sealed class ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.Name));
             this.Write("Formatter");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.TemplateParametersString != null? objInfo.TemplateParametersString : ""));
-            this.Write(" : global::MessagePack.Formatters.IMessagePackFormatter<");
+            this.Write(" : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
             this.Write(">\r\n    {\r\n");
  foreach(var item in objInfo.Members) { 
@@ -66,12 +66,12 @@ namespace ");
  } 
             this.Write("\r\n");
  if( objInfo.IsStringKey) { 
-            this.Write("\r\n        private readonly global::MessagePack.Internal.AutomataDictionary ____ke" +
-                    "yMapping;\r\n        private readonly byte[][] ____stringByteKeys;\r\n\r\n        publ" +
-                    "ic ");
+            this.Write("\r\n        private readonly global::Phoesion.MsgPack.Internal.AutomataDictionary _" +
+                    "___keyMapping;\r\n        private readonly byte[][] ____stringByteKeys;\r\n\r\n       " +
+                    " public ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.Name));
-            this.Write("Formatter()\r\n        {\r\n            this.____keyMapping = new global::MessagePack" +
-                    ".Internal.AutomataDictionary()\r\n            {\r\n");
+            this.Write("Formatter()\r\n        {\r\n            this.____keyMapping = new global::Phoesion.Ms" +
+                    "gPack.Internal.AutomataDictionary()\r\n            {\r\n");
  foreach(var x in objInfo.Members) { 
             this.Write("                { \"");
             this.Write(this.ToStringHelper.ToStringWithCulture(x.StringKey));
@@ -82,8 +82,8 @@ namespace ");
             this.Write("            };\r\n\r\n            this.____stringByteKeys = new byte[][]\r\n           " +
                     " {\r\n");
  foreach(var x in objInfo.Members.Where(x => x.IsReadable)) { 
-            this.Write("                global::MessagePack.Internal.CodeGenHelpers.GetEncodedStringBytes" +
-                    "(\"");
+            this.Write("                global::Phoesion.MsgPack.Internal.CodeGenHelpers.GetEncodedString" +
+                    "Bytes(\"");
             this.Write(this.ToStringHelper.ToStringWithCulture(x.StringKey));
             this.Write("\"),\r\n");
  } 
@@ -91,7 +91,8 @@ namespace ");
  } 
             this.Write("\r\n        public void Serialize(ref MessagePackWriter writer, ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
-            this.Write(" value, global::MessagePack.MessagePackSerializerOptions options)\r\n        {\r\n");
+            this.Write(" value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)\r\n        {" +
+                    "\r\n");
  if( objInfo.IsClass) { 
             this.Write("            if (value == null)\r\n            {\r\n                writer.WriteNil();" +
                     "\r\n                return;\r\n            }\r\n\r\n");
@@ -130,9 +131,9 @@ if(objInfo.HasIMessagePackSerializationCallbackReceiver && objInfo.NeedsCastOnBe
  } } 
             this.Write("        }\r\n\r\n        public ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
-            this.Write(" Deserialize(ref MessagePackReader reader, global::MessagePack.MessagePackSeriali" +
-                    "zerOptions options)\r\n        {\r\n            if (reader.TryReadNil())\r\n          " +
-                    "  {\r\n");
+            this.Write(" Deserialize(ref MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSe" +
+                    "rializerOptions options)\r\n        {\r\n            if (reader.TryReadNil())\r\n     " +
+                    "       {\r\n");
  if( objInfo.IsClass) { 
             this.Write("                return null;\r\n");
  } else { 
@@ -155,7 +156,7 @@ if(objInfo.HasIMessagePackSerializationCallbackReceiver && objInfo.NeedsCastOnBe
  } 
             this.Write("\r\n            for (int i = 0; i < length; i++)\r\n            {\r\n");
  if(objInfo.IsStringKey) { 
-            this.Write(@"                ReadOnlySpan<byte> stringKey = global::MessagePack.Internal.CodeGenHelpers.ReadStringSpan(ref reader);
+            this.Write(@"                ReadOnlySpan<byte> stringKey = global::Phoesion.MsgPack.Internal.CodeGenHelpers.ReadStringSpan(ref reader);
                 int key;
                 if (!this.____keyMapping.TryGetValue(stringKey, out key))
                 {

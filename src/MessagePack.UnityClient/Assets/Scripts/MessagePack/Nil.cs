@@ -4,7 +4,7 @@
 using System;
 using System.Buffers;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
 #if MESSAGEPACK_INTERNAL
     internal

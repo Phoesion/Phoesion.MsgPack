@@ -20,17 +20,17 @@ namespace <#= Namespace #>
 {
     using global::System;
     using global::System.Buffers;
-    using MessagePack;
+    using global::Phoesion.MsgPack;
 <# foreach(var info in EnumSerializationInfos) { #>
 
-    public sealed class <#= info.Name #>Formatter : global::MessagePack.Formatters.IMessagePackFormatter<<#= info.FullName #>>
+    public sealed class <#= info.Name #>Formatter : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<<#= info.FullName #>>
     {
-        public void Serialize(ref MessagePackWriter writer, <#= info.FullName #> value, global::MessagePack.MessagePackSerializerOptions options)
+        public void Serialize(ref MessagePackWriter writer, <#= info.FullName #> value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
             writer.Write((<#= info.UnderlyingType #>)value);
         }
 
-        public <#= info.FullName #> Deserialize(ref MessagePackReader reader, global::MessagePack.MessagePackSerializerOptions options)
+        public <#= info.FullName #> Deserialize(ref MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSerializerOptions options)
         {
             return (<#= info.FullName #>)reader.Read<#= info.UnderlyingType #>();
         }

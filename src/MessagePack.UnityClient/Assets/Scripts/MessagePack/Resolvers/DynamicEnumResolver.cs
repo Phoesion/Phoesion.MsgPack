@@ -8,10 +8,10 @@ using System.Buffers;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
-using MessagePack.Formatters;
-using MessagePack.Internal;
+using Phoesion.MsgPack.Formatters;
+using Phoesion.MsgPack.Internal;
 
-namespace MessagePack.Resolvers
+namespace Phoesion.MsgPack.Resolvers
 {
     /// <summary>
     /// EnumResolver by dynamic code generation, serialized underlying type.

@@ -40,22 +40,22 @@ namespace MessagePackCompiler.Generator
 
 namespace ");
             this.Write(this.ToStringHelper.ToStringWithCulture(Namespace));
-            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using Mess" +
-                    "agePack;\r\n");
+            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using glob" +
+                    "al::Phoesion.MsgPack;\r\n");
  foreach(var info in EnumSerializationInfos) { 
             this.Write("\r\n    public sealed class ");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.Name));
-            this.Write("Formatter : global::MessagePack.Formatters.IMessagePackFormatter<");
+            this.Write("Formatter : global::Phoesion.MsgPack.Formatters.IMessagePackFormatter<");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.FullName));
             this.Write(">\r\n    {\r\n        public void Serialize(ref MessagePackWriter writer, ");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.FullName));
-            this.Write(" value, global::MessagePack.MessagePackSerializerOptions options)\r\n        {\r\n   " +
-                    "         writer.Write((");
+            this.Write(" value, global::Phoesion.MsgPack.MessagePackSerializerOptions options)\r\n        {" +
+                    "\r\n            writer.Write((");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.UnderlyingType));
             this.Write(")value);\r\n        }\r\n\r\n        public ");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.FullName));
-            this.Write(" Deserialize(ref MessagePackReader reader, global::MessagePack.MessagePackSeriali" +
-                    "zerOptions options)\r\n        {\r\n            return (");
+            this.Write(" Deserialize(ref MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSe" +
+                    "rializerOptions options)\r\n        {\r\n            return (");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.FullName));
             this.Write(")reader.Read");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.UnderlyingType));

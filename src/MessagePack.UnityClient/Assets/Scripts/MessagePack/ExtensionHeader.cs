@@ -3,7 +3,7 @@
 
 using System;
 
-namespace MessagePack
+namespace Phoesion.MsgPack
 {
 #if MESSAGEPACK_INTERNAL
     internal
