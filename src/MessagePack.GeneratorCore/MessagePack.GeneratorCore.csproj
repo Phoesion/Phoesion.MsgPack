@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>MessagePackCompiler</RootNamespace>
 
     <SignAssembly>True</SignAssembly>
@@ -77,7 +77,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MessagePack\MessagePack.csproj" />
+    <ProjectReference Include="..\MessagePack\Phoesion.MsgPack.csproj" />
   </ItemGroup>
 
 </Project>
