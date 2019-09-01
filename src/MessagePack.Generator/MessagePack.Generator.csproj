@@ -3,11 +3,11 @@
   <PropertyGroup>
     <AssemblyName>mpc</AssemblyName>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <IsPackable>true</IsPackable>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>dotnet-mpc</ToolCommandName>
+    <ToolCommandName>mpc</ToolCommandName>
 
     <!-- NuGet Info -->
     <PackageId>MessagePack.Generator</PackageId>
@@ -25,8 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="16.7.54" />
-    <PackageReference Update="Nerdbank.GitVersioning" Version="3.2.31" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.0-beta-20204-02" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="16.7.56" />
+    <PackageReference Update="Nerdbank.GitVersioning" Version="3.3.25-alpha" />
+    <PackageReference Update="StyleCop.Analyzers" Version="1.2.0-beta.205" />
   </ItemGroup>
 
 </Project>
