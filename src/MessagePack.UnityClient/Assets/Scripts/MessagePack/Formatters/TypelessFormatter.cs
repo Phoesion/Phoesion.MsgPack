@@ -8,6 +8,7 @@ using System.Buffers;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -35,6 +36,9 @@ namespace MessagePack.Formatters
         private readonly ThreadsafeTypeKeyHashTable<byte[]> fullTypeNameCache = new ThreadsafeTypeKeyHashTable<byte[]>();
         private readonly ThreadsafeTypeKeyHashTable<byte[]> shortenedTypeNameCache = new ThreadsafeTypeKeyHashTable<byte[]>();
         private readonly AsymmetricKeyHashTable<byte[], ArraySegment<byte>, Type> typeCache = new AsymmetricKeyHashTable<byte[], ArraySegment<byte>, Type>(new StringArraySegmentByteAscymmetricEqualityComparer());
+
+        internal static readonly HashSet<string> whitelistCheck = new HashSet<string>();
+        internal static readonly HashSet<string> blacklistCheck = new HashSet<string>();
 
         private static readonly HashSet<Type> UseBuiltinTypes = new HashSet<Type>
         {
@@ -118,7 +122,8 @@ namespace MessagePack.Formatters
             }
         }
 
-        public void Serialize(ref MessagePackWriter writer, object value, MessagePackSerializerOptions options)
+        public void Serialize(ref MessagePackWriter writer, object value, MessagePackSerializerOptions options) => Serialize(ref writer, value, null, options);
+        public void Serialize(ref MessagePackWriter writer, object value, Type baseType, MessagePackSerializerOptions options)
         {
             if (value == null)
             {
@@ -132,6 +137,9 @@ namespace MessagePack.Formatters
             var typeNameCache = options.OmitAssemblyVersion ? this.shortenedTypeNameCache : this.fullTypeNameCache;
             if (!typeNameCache.TryGetValue(type, out typeName))
             {
+                if (blacklistCheck.Contains(type.FullName))
+                    throw new InvalidOperationException("Type is in blacklist:" + type.FullName);
+
                 TypeInfo ti = type.GetTypeInfo();
                 if (ti.IsAnonymous() || UseBuiltinTypes.Contains(type))
                 {
@@ -139,6 +147,10 @@ namespace MessagePack.Formatters
                 }
                 else
                 {
+                    if (baseType == null || !baseType.IsAssignableFrom(type))
+                        if (!IsSafeType(type))
+                            throw new InvalidOperationException("Type is not marked as whitelisted :" + type.FullName);
+
                     typeName = StringEncoding.UTF8.GetBytes(this.BuildTypeName(type, options));
                 }
 
@@ -198,7 +210,8 @@ namespace MessagePack.Formatters
             }
         }
 
-        public object Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)
+        public object Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options) => Deserialize(ref reader, null, options);
+        public object Deserialize(ref MessagePackReader reader, Type baseType, MessagePackSerializerOptions options)
         {
             if (reader.TryReadNil())
             {
@@ -221,7 +234,7 @@ namespace MessagePack.Formatters
                         typeNameArraySegment = new ArraySegment<byte>(rented, 0, (int)typeName.Length);
                     }
 
-                    var result = this.DeserializeByTypeName(typeNameArraySegment, ref reader, options);
+                    var result = this.DeserializeByTypeName(typeNameArraySegment, baseType, ref reader, options);
 
                     if (rented != null)
                     {
@@ -240,7 +253,7 @@ namespace MessagePack.Formatters
         /// Does not support deserializing of anonymous types
         /// Type should be covered by preceeding resolvers in complex/standard resolver.
         /// </summary>
-        private object DeserializeByTypeName(ArraySegment<byte> typeName, ref MessagePackReader byteSequence, MessagePackSerializerOptions options)
+        private object DeserializeByTypeName(ArraySegment<byte> typeName, Type baseType, ref MessagePackReader byteSequence, MessagePackSerializerOptions options)
         {
             // try get type with assembly name, throw if not found
             Type type;
@@ -272,6 +285,11 @@ namespace MessagePack.Formatters
             }
 
             options.ThrowIfDeserializingTypeIsDisallowed(type);
+
+            //white-list check for safetypes
+            if (baseType == null || !baseType.IsAssignableFrom(type))
+                if (!IsSafeType(type))
+                    throw new InvalidOperationException("Type is not marked as whitelisted : " + type.FullName);
 
             var formatter = options.Resolver.GetFormatterDynamicWithVerify(type);
 
@@ -311,6 +329,40 @@ namespace MessagePack.Formatters
 
             return deserializeMethod(formatter, ref byteSequence, options);
         }
+
+        static bool IsSafeType(Type type)
+        {
+            var typeFullName = type?.FullName;
+
+            //white-list check for safetypes
+            if (!whitelistCheck.Contains(typeFullName))
+            {
+                lock (whitelistCheck)
+                    if (!whitelistCheck.Contains(typeFullName))
+                    {
+                        var hasAttr = type.GetCustomAttributes(true)
+                                            .Select(a => (a as Attribute).GetType().FullName)
+                                            .Where(tname => tname != null)
+                                            .Any(tname => tname == "Phoesion.MsgPack.MessagePackObjectAttribute" ||
+                                                          tname == "Phoesion.Json.JsonSafeTypeAttribute" |
+                                                          tname == "Phoesion.VFSerializableAttribute" ||
+                                                          tname == "Phoesion.Glow.SafeTypeAttribute" ||
+                                                          tname == "Phoesion.SafeTypeAttribute");
+                        if (hasAttr)
+                            whitelistCheck.Add(typeFullName);
+                        else
+                        {
+                            lock (blacklistCheck)
+                                blacklistCheck.Add(typeFullName);
+                            return false;
+                        }
+                    }
+            }
+
+            //safe type
+            return true;
+        }
+
     }
 }
 
