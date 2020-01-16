@@ -830,6 +830,27 @@ namespace MessagePack.Internal
                     il.EmitCall(typeof(MessagePackWriter).GetRuntimeMethod("Write", new Type[] { t }));
                 }
             }
+            else if (t.IsClass && BuiltinResolverGetFormatterHelper.GetFormatter(t) == null)
+            {
+                argValue.EmitLoad();
+                member.EmitLoadValue(il);
+                var endifLabel = il.DefineLabel();
+                var elseLabel = il.DefineLabel();
+                il.Emit(OpCodes.Call, getIsDefinedType.MakeGenericMethod(t));
+                il.Emit(OpCodes.Brfalse_S, elseLabel);
+                il.EmitLdloc(localResolver);
+                il.Emit(OpCodes.Call, getFormatterWithVerify.MakeGenericMethod(t));
+                il.Emit(OpCodes.Br_S, endifLabel);
+                il.MarkLabel(elseLabel);
+                il.Emit(OpCodes.Call, getGenericTypelessFormatter.MakeGenericMethod(t));
+                il.MarkLabel(endifLabel);
+
+                argWriter.EmitLoad();
+                argValue.EmitLoad();
+                member.EmitLoadValue(il);
+                argOptions.EmitLoad();
+                il.EmitCall(getSerialize(t));
+            }
             else
             {
                 il.EmitLdloc(localResolver);
@@ -1142,6 +1163,13 @@ namespace MessagePack.Internal
                     il.EmitCall(MessagePackReaderTypeInfo.TypeInfo.GetDeclaredMethods("Read" + t.Name).First(x => x.GetParameters().Length == 0));
                 }
             }
+            else if (t.IsClass && BuiltinResolverGetFormatterHelper.GetFormatter(t) == null)
+            {
+                il.EmitCall(getGenericTypelessFormatter.MakeGenericMethod(t));
+                argReader.EmitLdarg();
+                argOptions.EmitLoad();
+                il.EmitCall(getDeserialize(t));
+            }
             else
             {
                 il.EmitLdloc(localResolver);
@@ -1238,13 +1266,16 @@ namespace MessagePack.Internal
         private static readonly MethodInfo ReadStringSpan = typeof(CodeGenHelpers).GetRuntimeMethod(nameof(CodeGenHelpers.ReadStringSpan), new[] { typeof(MessagePackReader).MakeByRefType() });
         private static readonly MethodInfo ArrayFromNullableReadOnlySequence = typeof(CodeGenHelpers).GetRuntimeMethod(nameof(CodeGenHelpers.GetArrayFromNullableSequence), new[] { typeof(ReadOnlySequence<byte>?).MakeByRefType() });
 
+        static readonly MethodInfo getIsDefinedType = typeof(FormatterResolverExtensions).GetRuntimeMethods().First(x => x.Name == "IsDefinedType");
+        private static readonly MethodInfo getGenericTypelessFormatter = typeof(FormatterResolverExtensions).GetRuntimeMethods().First(x => x.Name == nameof(FormatterResolverExtensions.GetGenericTypelessFormatter));
+
         private static readonly MethodInfo getFormatterWithVerify = typeof(FormatterResolverExtensions).GetRuntimeMethods().First(x => x.Name == nameof(FormatterResolverExtensions.GetFormatterWithVerify));
         private static readonly MethodInfo getResolverFromOptions = typeof(MessagePackSerializerOptions).GetRuntimeProperty(nameof(MessagePackSerializerOptions.Resolver)).GetMethod;
         private static readonly MethodInfo getSecurityFromOptions = typeof(MessagePackSerializerOptions).GetRuntimeProperty(nameof(MessagePackSerializerOptions.Security)).GetMethod;
         private static readonly MethodInfo securityDepthStep = typeof(MessagePackSecurity).GetRuntimeMethod(nameof(MessagePackSecurity.DepthStep), new[] { typeof(MessagePackReader).MakeByRefType() });
         private static readonly MethodInfo readerDepthGet = typeof(MessagePackReader).GetRuntimeProperty(nameof(MessagePackReader.Depth)).GetMethod;
         private static readonly MethodInfo readerDepthSet = typeof(MessagePackReader).GetRuntimeProperty(nameof(MessagePackReader.Depth)).SetMethod;
-        private static readonly Func<Type, MethodInfo> getSerialize = t => typeof(IMessagePackFormatter<>).MakeGenericType(t).GetRuntimeMethod(nameof(IMessagePackFormatter<int>.Serialize), new[] { typeof(MessagePackWriter).MakeByRefType(), t, typeof(MessagePackSerializerOptions) });
+        internal static readonly Func<Type, MethodInfo> getSerialize = t => typeof(IMessagePackFormatter<>).MakeGenericType(t).GetRuntimeMethod(nameof(IMessagePackFormatter<int>.Serialize), new[] { typeof(MessagePackWriter).MakeByRefType(), t, typeof(MessagePackSerializerOptions) });
         private static readonly Func<Type, MethodInfo> getDeserialize = t => typeof(IMessagePackFormatter<>).MakeGenericType(t).GetRuntimeMethod(nameof(IMessagePackFormatter<int>.Deserialize), new[] { refMessagePackReader, typeof(MessagePackSerializerOptions) });
         //// static readonly ConstructorInfo dictionaryConstructor = typeof(ByteArrayStringHashTable).GetTypeInfo().DeclaredConstructors.First(x => { var p = x.GetParameters(); return p.Length == 1 && p[0].ParameterType == typeof(int); });
         //// static readonly MethodInfo dictionaryAdd = typeof(ByteArrayStringHashTable).GetRuntimeMethod("Add", new[] { typeof(string), typeof(int) });

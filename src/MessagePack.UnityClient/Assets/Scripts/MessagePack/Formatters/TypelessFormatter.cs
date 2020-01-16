@@ -17,6 +17,13 @@ using MessagePack.Internal;
 
 namespace MessagePack.Formatters
 {
+    public sealed class GenericTypelessFormatter<T> : IMessagePackFormatter<T>
+    {
+        public static readonly IMessagePackFormatter<T> Instance = new GenericTypelessFormatter<T>();
+        public void Serialize(ref MessagePackWriter writer, T value, MessagePackSerializerOptions options) => TypelessFormatter.InstanceTyped.Serialize(ref writer, (object)value, typeof(T), options);
+        public T Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options) => (T)TypelessFormatter.InstanceTyped.Deserialize(ref reader, typeof(T), options);
+    }
+
     /// <summary>
     /// For `object` field that holds derived from `object` value, ex: var arr = new object[] { 1, "a", new Model() };.
     /// </summary>
@@ -29,7 +36,8 @@ namespace MessagePack.Formatters
         /// <summary>
         /// The singleton instance that can be used.
         /// </summary>
-        public static readonly IMessagePackFormatter<object> Instance = new TypelessFormatter();
+        public static readonly TypelessFormatter InstanceTyped = new TypelessFormatter();
+        public static readonly IMessagePackFormatter<object> Instance = InstanceTyped;
 
         private readonly ThreadsafeTypeKeyHashTable<SerializeMethod> serializers = new ThreadsafeTypeKeyHashTable<SerializeMethod>();
         private readonly ThreadsafeTypeKeyHashTable<DeserializeMethod> deserializers = new ThreadsafeTypeKeyHashTable<DeserializeMethod>();
@@ -243,6 +251,14 @@ namespace MessagePack.Formatters
 
                     return result;
                 }
+            }
+
+            //get formatter for no extension
+            if (baseType != null)
+            {
+                var formatter = options.Resolver.GetFormatterDynamicWithVerify(baseType);
+                if (formatter != null)
+                    return MessagePackSerializer.Deserialize(baseType, ref reader, options: options);
             }
 
             // fallback

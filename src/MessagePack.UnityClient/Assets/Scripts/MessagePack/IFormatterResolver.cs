@@ -26,6 +26,9 @@ namespace MessagePack
 
     public static class FormatterResolverExtensions
     {
+        public static bool IsDefinedType<T>(T Model) => Model != null && Model.GetType() == typeof(T);
+        public static IMessagePackFormatter<T> GetGenericTypelessFormatter<T>() => GenericTypelessFormatter<T>.Instance;
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMessagePackFormatter<T> GetFormatterWithVerify<T>(this IFormatterResolver resolver)
         {
