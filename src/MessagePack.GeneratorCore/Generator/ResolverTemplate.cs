@@ -40,7 +40,8 @@ namespace MessagePackCompiler.Generator
 
 namespace ");
             this.Write(this.ToStringHelper.ToStringWithCulture(Namespace));
-            this.Write("\r\n{\r\n    using System;\r\n\r\n    public class ");
+            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using Mess" +
+                    "agePack;\r\n\r\n    public class ");
             this.Write(this.ToStringHelper.ToStringWithCulture(ResolverName));
             this.Write(" : global::MessagePack.IFormatterResolver\r\n    {\r\n        public static readonly " +
                     "global::MessagePack.IFormatterResolver Instance = new ");

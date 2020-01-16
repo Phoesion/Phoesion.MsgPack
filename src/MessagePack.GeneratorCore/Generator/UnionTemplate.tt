@@ -18,9 +18,9 @@
 
 namespace <#= Namespace #>
 {
-    using System;
-    using System.Buffers;
-    using System.Collections.Generic;
+    using global::System;
+    using global::System.Buffers;
+    using global::System.Collections.Generic;
     using MessagePack;
 
 <# foreach(var info in UnionSerializationInfos) { #>

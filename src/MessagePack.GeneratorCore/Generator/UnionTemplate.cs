@@ -40,8 +40,8 @@ namespace MessagePackCompiler.Generator
 
 namespace ");
             this.Write(this.ToStringHelper.ToStringWithCulture(Namespace));
-            this.Write("\r\n{\r\n    using System;\r\n    using System.Buffers;\r\n    using System.Collections.G" +
-                    "eneric;\r\n    using MessagePack;\r\n\r\n");
+            this.Write("\r\n{\r\n    using global::System;\r\n    using global::System.Buffers;\r\n    using glob" +
+                    "al::System.Collections.Generic;\r\n    using MessagePack;\r\n\r\n");
  foreach(var info in UnionSerializationInfos) { 
             this.Write("    public sealed class ");
             this.Write(this.ToStringHelper.ToStringWithCulture(info.Name));

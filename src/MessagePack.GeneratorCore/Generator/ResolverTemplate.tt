@@ -18,8 +18,8 @@
 
 namespace <#= Namespace #>
 {
-    using System;
-    using System.Buffers;
+    using global::System;
+    using global::System.Buffers;
     using MessagePack;
 
     public class <#= ResolverName #> : global::MessagePack.IFormatterResolver

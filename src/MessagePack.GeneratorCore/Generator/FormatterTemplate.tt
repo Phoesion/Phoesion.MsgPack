@@ -21,8 +21,8 @@
 
 namespace <#= Namespace #>
 {
-    using System;
-    using System.Buffers;
+    using global::System;
+    using global::System.Buffers;
     using MessagePack;
 <# foreach(var objInfo in ObjectSerializationInfos) { #>
 

@@ -45,10 +45,16 @@ namespace MessagePackCompiler
             {
                 logger("Project Compilation Start:" + input);
 
+                input = Path.GetFullPath(input);
+
                 var compilation = (Path.GetExtension(input) == ".csproj")
                     ? await MessagePackCompilation.CreateFromProjectAsync(input.Split(','), conditionalSymbols.Concat(new[] { multioutSymbol }).ToArray(), cancellationToken)
 .ConfigureAwait(false) : await MessagePackCompilation.CreateFromDirectoryAsync(input, conditionalSymbols.Concat(new[] { multioutSymbol }).ToArray(), cancellationToken).ConfigureAwait(false);
                 var collector = new TypeCollector(compilation, true, useMapMode, x => Console.WriteLine(x));
+
+                //get project name as default root namespace
+                if (string.IsNullOrWhiteSpace(namespaceDot))
+                    namespaceDot = Path.GetFileNameWithoutExtension(input) + ".";
 
                 logger("Project Compilation Complete:" + sw.Elapsed.ToString());
 
