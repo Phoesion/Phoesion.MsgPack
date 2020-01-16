@@ -95,7 +95,11 @@ namespace MessagePack.Formatters
 
         private string BuildTypeName(Type type, MessagePackSerializerOptions options)
         {
-            if (options.OmitAssemblyVersion)
+            if (type == typeof(string) || type == typeof(string[]) || type.IsPrimitive)
+            {
+                return type.FullName;
+            }
+            else if (options.OmitAssemblyVersion)
             {
                 string full = type.AssemblyQualifiedName;
 
