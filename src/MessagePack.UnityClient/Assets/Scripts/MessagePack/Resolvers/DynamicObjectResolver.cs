@@ -242,6 +242,87 @@ namespace MessagePack.Resolvers
     }
 
     /// <summary>
+    /// ObjectResolver by dynamic code generation, no needs MessagePackObject attribute and serialized key as iteger.
+    /// </summary>
+    public sealed class DynamicContractlessObjectResolverMapIndex : IFormatterResolver
+    {
+        public static readonly DynamicContractlessObjectResolverMapIndex Instance = new DynamicContractlessObjectResolverMapIndex();
+
+        private const string ModuleName = "MessagePack.Resolvers.DynamicContractlessObjectResolverMapIndex ";
+
+        private static readonly DynamicAssembly DynamicAssembly;
+
+        private DynamicContractlessObjectResolverMapIndex()
+        {
+        }
+
+        static DynamicContractlessObjectResolverMapIndex()
+        {
+            DynamicAssembly = new DynamicAssembly(ModuleName);
+        }
+
+#if NETFRAMEWORK
+        public AssemblyBuilder Save()
+        {
+            return DynamicAssembly.Save();
+        }
+#endif
+
+        public IMessagePackFormatter<T> GetFormatter<T>()
+        {
+            return FormatterCache<T>.Formatter;
+        }
+
+        private static class FormatterCache<T>
+        {
+            public static readonly IMessagePackFormatter<T> Formatter;
+
+            static FormatterCache()
+            {
+                if (typeof(T) == typeof(object))
+                {
+                    return;
+                }
+
+                TypeInfo ti = typeof(T).GetTypeInfo();
+
+                if (ti.IsInterface)
+                {
+                    return;
+                }
+
+                if (ti.IsNullable())
+                {
+                    ti = ti.GenericTypeArguments[0].GetTypeInfo();
+
+                    var innerFormatter = DynamicContractlessObjectResolverMapIndex.Instance.GetFormatterDynamic(ti.AsType());
+                    if (innerFormatter == null)
+                    {
+                        return;
+                    }
+
+                    Formatter = (IMessagePackFormatter<T>)Activator.CreateInstance(typeof(StaticNullableFormatter<>).MakeGenericType(ti.AsType()), new object[] { innerFormatter });
+                    return;
+                }
+
+                if (ti.IsAnonymous())
+                {
+                    Formatter = (IMessagePackFormatter<T>)DynamicObjectTypeBuilder.BuildFormatterToDynamicMethod(typeof(T), false, true, false);
+                    return;
+                }
+
+                TypeInfo formatterTypeInfo = DynamicObjectTypeBuilder.BuildType(DynamicAssembly, typeof(T), false, true);
+                if (formatterTypeInfo == null)
+                {
+                    return;
+                }
+
+                Formatter = (IMessagePackFormatter<T>)Activator.CreateInstance(formatterTypeInfo.AsType());
+            }
+        }
+    }
+
+    /// <summary>
     /// ObjectResolver by dynamic code generation, no needs MessagePackObject attribute and serialized key as string, allow private member.
     /// </summary>
     public sealed class DynamicContractlessObjectResolverAllowPrivate : IFormatterResolver
