@@ -15,4 +15,9 @@
     <Compile Include="..\MessagePack.UnityClient\Assets\Scripts\MessagePack\Annotations\**\*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="16.7.54" />
+    <PackageReference Update="Nerdbank.GitVersioning" Version="3.2.31" />
+  </ItemGroup>
+
 </Project>

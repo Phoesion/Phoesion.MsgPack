@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
-    
+
     <IsPackable>true</IsPackable>
     <Description>Analyzer of MessagePack for C#, verify rule for [MessagePackObject] and code fix for [Key].</Description>
     <PackageTags>MsgPack;MessagePack;Serialization;Formatter;Analyzer</PackageTags>
@@ -22,7 +22,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" version="2.9.8" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" version="2.10.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" version="3.4.0" />
     <PackageReference Include="Nullable" Version="1.2.1" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +37,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="16.5.132" />
+    <PackageReference Update="Nerdbank.GitVersioning" Version="3.1.71" />
   </ItemGroup>
   <Target Name="PackBuildOutputs" DependsOnTargets="SatelliteDllsProjectOutputGroup;DebugSymbolsProjectOutputGroup">
     <ItemGroup>

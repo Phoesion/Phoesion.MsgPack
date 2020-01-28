@@ -49,7 +49,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{301F812B
 		azure-pipelines.yml = azure-pipelines.yml
 		azure-pipelines\build.yml = azure-pipelines\build.yml
 		Directory.Build.props = Directory.Build.props
-		global.json = global.json
 		nuget.config = nuget.config
 		stylecop.json = stylecop.json
 		version.json = version.json
@@ -78,7 +77,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagePack.Generator", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagePack.MSBuild.Tasks", "src\MessagePack.MSBuild.Tasks\MessagePack.MSBuild.Tasks.csproj", "{8DB135F5-A6FE-44E4-9853-7B48ED21F21B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagePackAnalyzer.Tests", "tests\MessagePackAnalyzer.Tests\MessagePackAnalyzer.Tests.csproj", "{7E5FB4B9-A0F5-4B10-A1F3-03AC0BC8265A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessagePackAnalyzer.Tests", "tests\MessagePackAnalyzer.Tests\MessagePackAnalyzer.Tests.csproj", "{7E5FB4B9-A0F5-4B10-A1F3-03AC0BC8265A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

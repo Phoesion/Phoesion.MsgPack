@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1</TargetFrameworks>
     <NoWarn>$(NoWarn);CS0649</NoWarn>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DefineConstants Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">$(DefineConstants);SPAN_BUILTIN</DefineConstants>
@@ -16,11 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\MessagePack.UnityClient\Assets\Scripts\MessagePack\**\*.cs"
-             Exclude="..\MessagePack.UnityClient\Assets\Scripts\MessagePack\Annotations\**;
-                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\Unity\**;
-                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\T4\**;
-                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\_InternalVisibleTo.cs" />
+    <Compile Include="..\MessagePack.UnityClient\Assets\Scripts\MessagePack\**\*.cs" Exclude="..\MessagePack.UnityClient\Assets\Scripts\MessagePack\Annotations\**;&#xD;&#xA;                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\Unity\**;&#xD;&#xA;                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\T4\**;&#xD;&#xA;                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\_InternalVisibleTo.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,13 +29,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Roslyn.Diagnostics.Analyzers" Version="2.9.7" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.0.0" />
-    <PackageReference Include="System.Reflection.Emit" Version="4.6.0" />
-    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.6.0" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.2" />
-    <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="3.1.7" />
+    <PackageReference Include="Roslyn.Diagnostics.Analyzers" Version="3.3.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.1" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -108,6 +105,11 @@
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="16.7.54" />
+    <PackageReference Update="Nerdbank.GitVersioning" Version="3.2.31" />
   </ItemGroup>
 
   <Target Name="CopyT4OutputToUnity" BeforeTargets="Compile">
