@@ -139,6 +139,8 @@ namespace MessagePack.Internal
             { typeof(ArraySegment<byte>), ByteArraySegmentFormatter.Instance },
             { typeof(ArraySegment<byte>?), new StaticNullableFormatter<ArraySegment<byte>>(ByteArraySegmentFormatter.Instance) },
 
+            { typeof(Microsoft.Extensions.Primitives.StringValues), StringValuesFormatter.Instance },
+
             { typeof(Type), TypeFormatter.Instance },
 
             { typeof(System.Numerics.BigInteger), BigIntegerFormatter.Instance },
