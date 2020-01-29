@@ -16,11 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\MessagePack.UnityClient\Assets\Scripts\MessagePack\**\*.cs"
-             Exclude="..\MessagePack.UnityClient\Assets\Scripts\MessagePack\Annotations\**;
-                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\Unity\**;
-                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\T4\**;
-                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\_InternalVisibleTo.cs" />
+    <Compile Include="..\MessagePack.UnityClient\Assets\Scripts\MessagePack\**\*.cs" Exclude="..\MessagePack.UnityClient\Assets\Scripts\MessagePack\Annotations\**;&#xD;&#xA;                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\Unity\**;&#xD;&#xA;                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\T4\**;&#xD;&#xA;                      ..\MessagePack.UnityClient\Assets\Scripts\MessagePack\_InternalVisibleTo.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +37,7 @@
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.2" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="Microsoft.Extensions.Primitives" Version="2.1.6" />
   </ItemGroup>
 
   <ItemGroup>
