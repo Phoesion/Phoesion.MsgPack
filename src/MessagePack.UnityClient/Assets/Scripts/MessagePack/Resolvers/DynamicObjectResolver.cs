@@ -1861,13 +1861,13 @@ namespace MessagePack.Internal
                     ctor = ctorEnumerator.Current;
                 }
             }
-
+#if false
             // struct allows null ctor
             if (ctor == null && !isStruct)
             {
                 throw new MessagePackDynamicObjectResolverException("can't find public constructor. type:" + type.FullName);
             }
-
+#endif
             var constructorParameters = new List<EmittableMember>();
             if (ctor != null)
             {
