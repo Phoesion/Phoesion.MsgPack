@@ -43,7 +43,7 @@ namespace MessagePack.GeneratorCore.Utils
             // MonoBleedingEdge = .NET 4.x Unity metadata
             // 2.0.0 = .NET Standard 2.0 Unity metadata
             var metadata = new List<PortableExecutableReference>();
-            var targetMetadataLocations = locations.Select(Path.GetFullPath).Concat(GetStandardReferences()).Distinct().Where(x => !(x.Contains("MonoBleedingEdge") || x.Contains("2.0.0")));
+            var targetMetadataLocations = locations.Select(Path.GetFullPath).Concat(GetStandardReferences()).Distinct().Where(x => !x.Contains("MonoBleedingEdge"));
             foreach (var item in targetMetadataLocations)
             {
                 if (File.Exists(item))
@@ -345,6 +345,12 @@ namespace MessagePack.GeneratorCore.Utils
         private static IEnumerable<string> NetstandardFallBack(string originalTargetFramework)
         {
             yield return originalTargetFramework;
+
+            if (originalTargetFramework.Contains("net5."))
+            {
+                yield return "net5.0";
+            }
+
             if (originalTargetFramework.Contains("netcoreapp"))
             {
                 yield return "netcoreapp3.1";
