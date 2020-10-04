@@ -14,23 +14,25 @@ namespace MessagePackCompiler
     internal static class RoslynExtensions
     {
         public static IEnumerable<INamedTypeSymbol> GetNamedTypeSymbols(this Compilation compilation)
-        {
-            foreach (var syntaxTree in compilation.SyntaxTrees)
-            {
-                var semModel = compilation.GetSemanticModel(syntaxTree);
+            => GetNamedTypeSymbols(compilation.GlobalNamespace);
 
-                foreach (var item in syntaxTree.GetRoot()
-                    .DescendantNodes()
-                    .Select(x => semModel.GetDeclaredSymbol(x))
-                    .Where(x => x != null))
-                {
-                    var namedType = item as INamedTypeSymbol;
-                    if (namedType != null)
-                    {
-                        yield return namedType;
-                    }
-                }
-            }
+        public static IEnumerable<INamedTypeSymbol> GetNamedTypeSymbols(this INamespaceSymbol @namespace)
+        {
+            foreach (var type in @namespace.GetTypeMembers())
+                foreach (var nestedType in GetNestedTypes(type))
+                    yield return nestedType;
+
+            foreach (var nestedNamespace in @namespace.GetNamespaceMembers())
+                foreach (var type in GetNamedTypeSymbols(nestedNamespace))
+                    yield return type;
+        }
+
+        public static IEnumerable<INamedTypeSymbol> GetNestedTypes(this INamedTypeSymbol type)
+        {
+            yield return type;
+            foreach (var nestedType in type.GetTypeMembers()
+                .SelectMany(nestedType => GetNestedTypes(nestedType)))
+                yield return nestedType;
         }
 
         public static IEnumerable<INamedTypeSymbol> EnumerateBaseType(this ITypeSymbol symbol)
@@ -144,6 +146,7 @@ namespace MessagePackCompiler
 
         public static bool ApproximatelyEqual(this INamedTypeSymbol left, INamedTypeSymbol right)
         {
+            return left.ToDisplayString() == right.ToDisplayString();
             if (left is IErrorTypeSymbol || right is IErrorTypeSymbol)
             {
                 return left.ToDisplayString() == right.ToDisplayString();

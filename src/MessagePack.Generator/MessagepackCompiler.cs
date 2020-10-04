@@ -43,7 +43,7 @@ namespace Phoesion.MsgPack.Generator
             [Option("o", "Output file path(.cs) or directory (multiple generate file).")] string output,
             [Option("c", "Conditional compiler symbols, split with ','. Ignored if a project file is specified for input.")] string? conditionalSymbol = null,
             [Option("r", "Set resolver name.")] string resolverName = "GeneratedResolver",
-            [Option("n", "Set namespace root name.")] string @namespace = "MessagePack",
+            [Option("n", "Set namespace root name.")] string? @namespace = null,
             [Option("m", "Force use map mode serialization.")] bool useMapMode = false,
             [Option("ms", "Generate #if-- files by symbols, split with ','.")] string? multipleIfDirectiveOutputSymbols = null,
             [Option("ei", "Ignore type names.")] string[]? externalIgnoreTypeNames = null)
@@ -61,6 +61,10 @@ namespace Phoesion.MsgPack.Generator
                 {
                     (workspace, compilation) = await this.OpenMSBuildProjectAsync(input, this.Context.CancellationToken);
                 }
+
+                //get namespace from project file
+                if (@namespace == null)
+                    @namespace = Path.GetFileNameWithoutExtension(input);
 
                 await new MessagePackCompiler.CodeGenerator(x => Console.WriteLine(x), this.Context.CancellationToken)
                     .GenerateFileAsync(
