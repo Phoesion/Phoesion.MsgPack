@@ -6,6 +6,14 @@ using System.Linq; // require UNITY_2018_3_OR_NEWER
 using System.Reflection;
 using MessagePack.Formatters;
 
+using IgnoreMemberAttribute = MessagePack.IgnoreMemberAttribute;
+using IMessagePackSerializationCallbackReceiver = MessagePack.IMessagePackSerializationCallbackReceiver;
+using KeyAttribute = MessagePack.KeyAttribute;
+using MessagePackFormatterAttribute = MessagePack.MessagePackFormatterAttribute;
+using MessagePackObjectAttribute = MessagePack.MessagePackObjectAttribute;
+using SerializationConstructorAttribute = MessagePack.SerializationConstructorAttribute;
+using UnionAttribute = MessagePack.UnionAttribute;
+
 namespace MessagePack.Resolvers
 {
     /// <summary>

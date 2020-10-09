@@ -17,6 +17,14 @@ using MessagePack.Internal;
 
 #pragma warning disable SA1403 // File may only contain a single namespace
 
+using IgnoreMemberAttribute = MessagePack.IgnoreMemberAttribute;
+using IMessagePackSerializationCallbackReceiver = MessagePack.IMessagePackSerializationCallbackReceiver;
+using KeyAttribute = MessagePack.KeyAttribute;
+using MessagePackFormatterAttribute = MessagePack.MessagePackFormatterAttribute;
+using MessagePackObjectAttribute = MessagePack.MessagePackObjectAttribute;
+using SerializationConstructorAttribute = MessagePack.SerializationConstructorAttribute;
+using UnionAttribute = MessagePack.UnionAttribute;
+
 namespace MessagePack.Resolvers
 {
     /// <summary>
@@ -435,103 +443,103 @@ namespace MessagePack.Internal
 
             using (MonoProtection.EnterRefEmitLock())
             {
-            Type formatterType = typeof(IMessagePackFormatter<>).MakeGenericType(type);
+                Type formatterType = typeof(IMessagePackFormatter<>).MakeGenericType(type);
             TypeBuilder typeBuilder = assembly.DefineType("MessagePack.Formatters." + SubtractFullNameRegex.Replace(type.FullName, string.Empty).Replace(".", "_") + "Formatter" + Interlocked.Increment(ref nameSequence), TypeAttributes.Public | TypeAttributes.Sealed, null, new[] { formatterType });
 
-            FieldBuilder stringByteKeysField = null;
-            Dictionary<ObjectSerializationInfo.EmittableMember, FieldInfo> customFormatterLookup = null;
+                FieldBuilder stringByteKeysField = null;
+                Dictionary<ObjectSerializationInfo.EmittableMember, FieldInfo> customFormatterLookup = null;
 
-            // string key needs string->int mapper for deserialize switch statement
-            if (serializationInfo.IsStringKey)
-            {
-                ConstructorBuilder method = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes);
-                stringByteKeysField = typeBuilder.DefineField("stringByteKeys", typeof(byte[][]), FieldAttributes.Private | FieldAttributes.InitOnly);
+                // string key needs string->int mapper for deserialize switch statement
+                if (serializationInfo.IsStringKey)
+                {
+                    ConstructorBuilder method = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes);
+                    stringByteKeysField = typeBuilder.DefineField("stringByteKeys", typeof(byte[][]), FieldAttributes.Private | FieldAttributes.InitOnly);
 
-                ILGenerator il = method.GetILGenerator();
-                BuildConstructor(type, serializationInfo, method, stringByteKeysField, il);
-                customFormatterLookup = BuildCustomFormatterField(typeBuilder, serializationInfo, il);
-                il.Emit(OpCodes.Ret);
-            }
-            else
-            {
-                ConstructorBuilder method = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes);
-                ILGenerator il = method.GetILGenerator();
-                il.EmitLoadThis();
-                il.Emit(OpCodes.Call, objectCtor);
-                customFormatterLookup = BuildCustomFormatterField(typeBuilder, serializationInfo, il);
-                il.Emit(OpCodes.Ret);
-            }
+                    ILGenerator il = method.GetILGenerator();
+                    BuildConstructor(type, serializationInfo, method, stringByteKeysField, il);
+                    customFormatterLookup = BuildCustomFormatterField(typeBuilder, serializationInfo, il);
+                    il.Emit(OpCodes.Ret);
+                }
+                else
+                {
+                    ConstructorBuilder method = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, Type.EmptyTypes);
+                    ILGenerator il = method.GetILGenerator();
+                    il.EmitLoadThis();
+                    il.Emit(OpCodes.Call, objectCtor);
+                    customFormatterLookup = BuildCustomFormatterField(typeBuilder, serializationInfo, il);
+                    il.Emit(OpCodes.Ret);
+                }
 
-            {
-                MethodBuilder method = typeBuilder.DefineMethod(
-                    "Serialize",
-                    MethodAttributes.Public | MethodAttributes.Final | MethodAttributes.Virtual,
-                    returnType: null,
-                    parameterTypes: new Type[] { typeof(MessagePackWriter).MakeByRefType(), type, typeof(MessagePackSerializerOptions) });
-                method.DefineParameter(1, ParameterAttributes.None, "writer");
-                method.DefineParameter(2, ParameterAttributes.None, "value");
-                method.DefineParameter(3, ParameterAttributes.None, "options");
+                {
+                    MethodBuilder method = typeBuilder.DefineMethod(
+                        "Serialize",
+                        MethodAttributes.Public | MethodAttributes.Final | MethodAttributes.Virtual,
+                        returnType: null,
+                        parameterTypes: new Type[] { typeof(MessagePackWriter).MakeByRefType(), type, typeof(MessagePackSerializerOptions) });
+                    method.DefineParameter(1, ParameterAttributes.None, "writer");
+                    method.DefineParameter(2, ParameterAttributes.None, "value");
+                    method.DefineParameter(3, ParameterAttributes.None, "options");
 
-                ILGenerator il = method.GetILGenerator();
-                BuildSerialize(
-                    type,
-                    serializationInfo,
-                    il,
-                    () =>
-                    {
-                        il.EmitLoadThis();
-                        il.EmitLdfld(stringByteKeysField);
-                    },
-                    (index, member) =>
-                    {
-                        FieldInfo fi;
-                        if (!customFormatterLookup.TryGetValue(member, out fi))
-                        {
-                            return null;
-                        }
-
-                        return () =>
+                    ILGenerator il = method.GetILGenerator();
+                    BuildSerialize(
+                        type,
+                        serializationInfo,
+                        il,
+                        () =>
                         {
                             il.EmitLoadThis();
-                            il.EmitLdfld(fi);
-                        };
-                    },
-                    1);
-            }
-
-            {
-                MethodBuilder method = typeBuilder.DefineMethod(
-                    "Deserialize",
-                    MethodAttributes.Public | MethodAttributes.Final | MethodAttributes.Virtual,
-                    type,
-                    new Type[] { refMessagePackReader, typeof(MessagePackSerializerOptions) });
-                method.DefineParameter(1, ParameterAttributes.None, "reader");
-                method.DefineParameter(2, ParameterAttributes.None, "options");
-
-                ILGenerator il = method.GetILGenerator();
-                BuildDeserialize(
-                    type,
-                    serializationInfo,
-                    il,
-                    (index, member) =>
-                    {
-                        FieldInfo fi;
-                        if (!customFormatterLookup.TryGetValue(member, out fi))
+                            il.EmitLdfld(stringByteKeysField);
+                        },
+                        (index, member) =>
                         {
-                            return null;
-                        }
+                            FieldInfo fi;
+                            if (!customFormatterLookup.TryGetValue(member, out fi))
+                            {
+                                return null;
+                            }
 
-                        return () =>
+                            return () =>
+                            {
+                                il.EmitLoadThis();
+                                il.EmitLdfld(fi);
+                            };
+                        },
+                        1);
+                }
+
+                {
+                    MethodBuilder method = typeBuilder.DefineMethod(
+                        "Deserialize",
+                        MethodAttributes.Public | MethodAttributes.Final | MethodAttributes.Virtual,
+                        type,
+                        new Type[] { refMessagePackReader, typeof(MessagePackSerializerOptions) });
+                    method.DefineParameter(1, ParameterAttributes.None, "reader");
+                    method.DefineParameter(2, ParameterAttributes.None, "options");
+
+                    ILGenerator il = method.GetILGenerator();
+                    BuildDeserialize(
+                        type,
+                        serializationInfo,
+                        il,
+                        (index, member) =>
                         {
-                            il.EmitLoadThis();
-                            il.EmitLdfld(fi);
-                        };
-                    },
-                    1); // firstArgIndex:0 is this.
-            }
+                            FieldInfo fi;
+                            if (!customFormatterLookup.TryGetValue(member, out fi))
+                            {
+                                return null;
+                            }
 
-            return typeBuilder.CreateTypeInfo();
-        }
+                            return () =>
+                            {
+                                il.EmitLoadThis();
+                                il.EmitLdfld(fi);
+                            };
+                        },
+                        1); // firstArgIndex:0 is this.
+                }
+
+                return typeBuilder.CreateTypeInfo();
+            }
         }
 
         public static object BuildFormatterToDynamicMethod(Type type, bool forceStringKey, bool contractless, bool allowPrivate)

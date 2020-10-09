@@ -17,6 +17,14 @@ using MessagePack.Internal;
 #pragma warning disable SA1403 // File may only contain a single namespace
 #pragma warning disable SA1509 // Opening braces should not be preceded by blank line
 
+using IgnoreMemberAttribute = MessagePack.IgnoreMemberAttribute;
+using IMessagePackSerializationCallbackReceiver = MessagePack.IMessagePackSerializationCallbackReceiver;
+using KeyAttribute = MessagePack.KeyAttribute;
+using MessagePackFormatterAttribute = MessagePack.MessagePackFormatterAttribute;
+using MessagePackObjectAttribute = MessagePack.MessagePackObjectAttribute;
+using SerializationConstructorAttribute = MessagePack.SerializationConstructorAttribute;
+using UnionAttribute = MessagePack.UnionAttribute;
+
 namespace MessagePack.Resolvers
 {
     /// <summary>
