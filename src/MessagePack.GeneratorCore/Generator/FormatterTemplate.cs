@@ -103,7 +103,9 @@ namespace ");
             this.Write(this.ToStringHelper.ToStringWithCulture(member.GetSerializeMethodString()));
             this.Write(";\r\n");
  } } 
-            this.Write("        }\r\n\r\n        public ");
+            this.Write("        }\r\n        \r\n        public static Func<");
+            this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
+            this.Write("> CustomConstructor = null;\r\n\r\n        public ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
             this.Write(" Deserialize(ref MessagePackReader reader, global::Phoesion.MsgPack.MessagePackSe" +
                     "rializerOptions options)\r\n        {\r\n            if (reader.TryReadNil())\r\n     " +
@@ -139,7 +141,7 @@ namespace ");
  } 
             this.Write("                    default:\r\n                        reader.Skip();\r\n           " +
                     "             break;\r\n                }\r\n            }\r\n\r\n            var ____res" +
-                    "ult = new ");
+                    "ult = CustomConstructor != null ? CustomConstructor() : new ");
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.GetConstructorString()));
             this.Write(";\r\n");
  foreach(var x in objInfo.Members.Where(x => x.IsWritable)) { 
